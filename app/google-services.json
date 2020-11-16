@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "692352252886",
+    "firebase_url": "https://videouploadproject-a9968.firebaseio.com",
+    "project_id": "videouploadproject-a9968",
+    "storage_bucket": "videouploadproject-a9968.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692352252886:android:62a19cbd6e2ec9fbe68277",
+        "android_client_info": {
+          "package_name": "com.example.videouploadproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692352252886-lkis5n9hjhgtouec24fsqgocn1nfkanh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUanUfDKprUCJAJul5CTU5JohTL0SxPv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692352252886-lkis5n9hjhgtouec24fsqgocn1nfkanh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
