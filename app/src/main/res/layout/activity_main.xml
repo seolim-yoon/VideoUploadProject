@@ -3,7 +3,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.videouploadproject.MainActivity" />
+            type="com.example.videouploadproject.view.ui.MainActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

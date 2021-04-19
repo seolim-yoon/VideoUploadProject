@@ -1,4 +1,4 @@
-package com.example.videouploadproject
+package com.example.videouploadproject.view.ui
 
 import android.content.pm.PackageManager
 import android.graphics.Point
@@ -8,10 +8,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.videouploadproject.adapter.SelectedVideoListAdapter
+import com.example.videouploadproject.R
+import com.example.videouploadproject.view.adapter.SelectedVideoListAdapter
 import com.example.videouploadproject.databinding.ActivityMainBinding
-import com.example.videouploadproject.dialog.VideoLoadDialog
-import com.example.videouploadproject.item.VideoInfo
+import com.example.videouploadproject.view.ui.VideoLoadDialog
+import com.example.videouploadproject.model.VideoInfo
 import com.example.videouploadproject.service.UploadService
 import org.jetbrains.anko.startService
 import org.jetbrains.anko.toast
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.activity = this@MainActivity
         checkPermission()
         initView()

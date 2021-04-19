@@ -1,4 +1,4 @@
-package com.example.videouploadproject.adapter
+package com.example.videouploadproject.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.videouploadproject.databinding.HolderVideoListBinding
-import com.example.videouploadproject.item.VideoInfo
+import com.example.videouploadproject.model.VideoInfo
 import kotlin.collections.ArrayList
 
 class AllVideoListAdapter(private val context: Context?, var videoInfo: ArrayList<VideoInfo>): RecyclerView.Adapter<AllVideoListAdapter.VideoListHolder>() {

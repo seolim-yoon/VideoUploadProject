@@ -1,4 +1,4 @@
-package com.example.videouploadproject.dialog
+package com.example.videouploadproject.view.ui
 
 import android.database.Cursor
 import android.net.Uri
@@ -11,9 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.videouploadproject.R
-import com.example.videouploadproject.adapter.AllVideoListAdapter
+import com.example.videouploadproject.view.adapter.AllVideoListAdapter
 import com.example.videouploadproject.databinding.DlgVideoLoadBinding
-import com.example.videouploadproject.item.VideoInfo
+import com.example.videouploadproject.model.VideoInfo
 
 class VideoLoadDialog(
     private var x: Int,

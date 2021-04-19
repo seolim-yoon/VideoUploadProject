@@ -3,7 +3,7 @@
     <data>
         <variable
             name="dialog"
-            type="com.example.videouploadproject.dialog.VideoLoadDialog" />
+            type="com.example.videouploadproject.view.ui.VideoLoadDialog" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

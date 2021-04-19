@@ -5,7 +5,7 @@
             type="android.view.View"/>
         <variable
             name="videoinfo"
-            type="com.example.videouploadproject.item.VideoInfo"/>
+            type="com.example.videouploadproject.model.VideoInfo"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

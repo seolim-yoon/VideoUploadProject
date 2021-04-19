@@ -8,10 +8,10 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.videouploadproject.INTENT_UPLOAD_LIST
-import com.example.videouploadproject.MainActivity
 import com.example.videouploadproject.R
-import com.example.videouploadproject.item.VideoInfo
+import com.example.videouploadproject.model.VideoInfo
+import com.example.videouploadproject.view.ui.INTENT_UPLOAD_LIST
+import com.example.videouploadproject.view.ui.MainActivity
 import com.google.firebase.storage.FirebaseStorage
 import org.jetbrains.anko.longToast
 

@@ -1,4 +1,4 @@
-package com.example.videouploadproject.item
+package com.example.videouploadproject.model
 
 import java.io.Serializable
 

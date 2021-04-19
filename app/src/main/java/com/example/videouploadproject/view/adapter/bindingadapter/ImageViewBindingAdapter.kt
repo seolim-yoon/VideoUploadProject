@@ -1,4 +1,4 @@
-package com.example.videouploadproject.util.bindingAdapter
+package com.example.videouploadproject.view.adapter.bindingadapter
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

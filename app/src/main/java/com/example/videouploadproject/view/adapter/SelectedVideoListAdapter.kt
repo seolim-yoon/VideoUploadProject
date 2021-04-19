@@ -1,4 +1,4 @@
-package com.example.videouploadproject.adapter
+package com.example.videouploadproject.view.adapter
 
 import android.content.Context
 import android.os.VibrationEffect
@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.videouploadproject.databinding.HolderVideoListBinding
-import com.example.videouploadproject.item.VideoInfo
+import com.example.videouploadproject.model.VideoInfo
 import java.util.ArrayList
 
 class SelectedVideoListAdapter(private val context: Context, val itemLongClick: () -> Unit): RecyclerView.Adapter<SelectedVideoListAdapter.SelectedVideoListHolder>() {
