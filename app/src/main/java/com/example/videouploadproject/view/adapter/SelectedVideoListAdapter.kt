@@ -9,37 +9,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.videouploadproject.databinding.HolderVideoListBinding
+import com.example.videouploadproject.databinding.HolderVideoMainListBinding
 import com.example.videouploadproject.model.VideoInfo
+import com.example.videouploadproject.repository.data.entity.Video
 import java.util.ArrayList
 
-class SelectedVideoListAdapter(private val context: Context, val itemLongClick: () -> Unit): RecyclerView.Adapter<SelectedVideoListAdapter.SelectedVideoListHolder>() {
-    var videoInfo: ArrayList<VideoInfo> = ArrayList()
+class SelectedVideoListAdapter(private val context: Context,
+                               val videoItemClick: (Video) -> Unit,
+                               val videoItemLongClick: (Video) -> Unit
+): RecyclerView.Adapter<SelectedVideoListAdapter.SelectedVideoListHolder>() {
+    private var videoInfo: List<Video> = listOf()
 
-    inner class SelectedVideoListHolder(private val binding: HolderVideoListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(info: VideoInfo) {
-            binding.videoinfo = info
+    inner class SelectedVideoListHolder(private val binding: HolderVideoMainListBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(info: Video) {
+            binding.video = info
 
             with(binding.ivDeleteImage) {
-                visibility = if (info.isDeleteMode) {
-                                View.VISIBLE
-                             } else {
-                                View.GONE
-                             }
-
                 setOnClickListener {
-                    deleteVideoFile(info)
+                    videoItemClick(info)
+                    binding.invalidateAll()
                 }
             }
 
-            itemView.setOnLongClickListener{
-                itemLongClick()
+            binding.root.setOnLongClickListener{
+                videoItemLongClick(info)
                 true
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectedVideoListHolder
-            = SelectedVideoListHolder(HolderVideoListBinding.inflate(LayoutInflater.from(context), parent, false))
+            = SelectedVideoListHolder(HolderVideoMainListBinding.inflate(LayoutInflater.from(context), parent, false))
 
     override fun onBindViewHolder(holder: SelectedVideoListHolder, position: Int) {
         holder.bind(videoInfo[position])
@@ -48,7 +48,6 @@ class SelectedVideoListAdapter(private val context: Context, val itemLongClick: 
     override fun getItemCount(): Int = videoInfo.size
 
     fun setDeleteMode() {
-        videoInfo.forEach{ it.isDeleteMode = true }
         notifyDataSetChanged()
 
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -60,12 +59,11 @@ class SelectedVideoListAdapter(private val context: Context, val itemLongClick: 
     }
 
     fun setNormalMode() {
-        videoInfo.forEach{ it.isDeleteMode = false }
         notifyDataSetChanged()
     }
 
-    fun deleteVideoFile(info: VideoInfo) {
-        videoInfo.remove(info)
+    fun setVideoInfos(video: List<Video>) {
+        this.videoInfo = video
         notifyDataSetChanged()
     }
 }

@@ -1,12 +1,17 @@
 package com.example.videouploadproject.view.ui
 
+import android.app.Application
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,8 +19,10 @@ import com.example.videouploadproject.R
 import com.example.videouploadproject.view.adapter.AllVideoListAdapter
 import com.example.videouploadproject.databinding.DlgVideoLoadBinding
 import com.example.videouploadproject.model.VideoInfo
+import com.example.videouploadproject.viewmodel.MainViewModel
 
 class VideoLoadDialog(
+    context: Context,
     private var x: Int,
     private var y: Int,
     val loadListener: (ArrayList<VideoInfo>) -> Unit
@@ -23,6 +30,7 @@ class VideoLoadDialog(
     private lateinit var binding: DlgVideoLoadBinding
     private lateinit var allListAdapter: AllVideoListAdapter
     private var selectedList: ArrayList<VideoInfo> = ArrayList()
+    private val mainViewModel: MainViewModel = MainViewModel(context?.applicationContext as Application)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,54 +55,27 @@ class VideoLoadDialog(
 
     private fun initView() {
         dialog?.window?.setLayout(x, y)
-        allListAdapter = AllVideoListAdapter(context, getVideo())
+        allListAdapter = AllVideoListAdapter(context, mainViewModel.getVideo()){
+            info ->
+            Log.v("seolim", "info.isChecked : " + info.isChecked)
+            info.isChecked = !info.isChecked
+            if(info.isChecked) selectedList.add(info) else selectedList.remove(info)
+
+            selectedList.takeIf { 5 <= it.size }?.let {
+                android.widget.Toast.makeText(context, "최대 5개까지 선택할 수 있습니다.", android.widget.Toast.LENGTH_SHORT).show()
+                return@AllVideoListAdapter
+            }
+        }
         binding.rvVideoAlbumList.layoutManager = GridLayoutManager(context, 2)
         binding.rvVideoAlbumList.adapter = allListAdapter
-
     }
 
     fun selectOKClick(view: View) {
         dismiss()
-        selectedList = allListAdapter.selectedList
         loadListener(selectedList)
     }
 
     fun selectCancelClick(view: View) {
         dismiss()
-    }
-
-    private fun getVideo(): ArrayList<VideoInfo> {
-        val projection = arrayOf(
-            MediaStore.Video.Media._ID,
-            MediaStore.Video.Media.DISPLAY_NAME,
-            MediaStore.Video.Media.DATE_TAKEN
-        )
-
-        val uri: Uri = MediaStore.Video.Media.getContentUri("external")
-        val sortOrder = MediaStore.Video.Media.DATE_TAKEN + " DESC"
-        val cursor: Cursor? = context?.contentResolver?.query(
-            uri,
-            projection,
-            null,
-            null,
-            sortOrder
-        )
-        val videoInfo: ArrayList<VideoInfo> = ArrayList()
-
-        cursor?.use {
-            while (cursor.moveToNext()) {
-                val id = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media._ID))
-                val title = cursor.getString(1)
-                val contentUri = Uri.withAppendedPath(
-                    MediaStore.Video.Media.getContentUri("external"),
-                    id.toString()
-                )
-
-                videoInfo.add(VideoInfo(title, contentUri.toString(), false, false))
-            }
-            cursor.close()
-        }
-
-        return videoInfo
     }
 }

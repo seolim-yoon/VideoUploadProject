@@ -4,16 +4,20 @@ import android.content.pm.PackageManager
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.videouploadproject.R
 import com.example.videouploadproject.view.adapter.SelectedVideoListAdapter
 import com.example.videouploadproject.databinding.ActivityMainBinding
-import com.example.videouploadproject.view.ui.VideoLoadDialog
 import com.example.videouploadproject.model.VideoInfo
+import com.example.videouploadproject.repository.data.entity.Video
 import com.example.videouploadproject.service.UploadService
+import com.example.videouploadproject.viewmodel.MainViewModel
 import org.jetbrains.anko.startService
 import org.jetbrains.anko.toast
 
@@ -21,10 +25,8 @@ const val INTENT_UPLOAD_LIST = "uploadlist"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var selectListAdapter: SelectedVideoListAdapter
-    private var selectVideoInfo: ArrayList<VideoInfo> = java.util.ArrayList()
-    var isDeleteMode = false
 
     private val permissionList = arrayOf(
         android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -39,13 +41,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        selectListAdapter = SelectedVideoListAdapter(applicationContext) {
-            isDeleteMode = true
+        selectListAdapter = SelectedVideoListAdapter(applicationContext, { video ->
+            mainViewModel.delete(video)
+        }, {
+            mainViewModel.isDeleteMode = true
             selectListAdapter.setDeleteMode()
-        }
+        })
 
-        binding.rvSelectVideoList.layoutManager = GridLayoutManager(baseContext, 2)
+        binding.rvSelectVideoList.layoutManager = GridLayoutManager(baseContext, 1)
         binding.rvSelectVideoList.adapter = selectListAdapter
+
+        mainViewModel.getAll().observe(this, Observer { video ->
+            selectListAdapter.setVideoInfos(video)
+        })
     }
 
     private fun checkPermission() {
@@ -60,15 +68,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun uploadClick(view: View) {
-        if(selectVideoInfo.size == 0) {
-            toast("업로드 할 파일이 없습니다")
-        } else {
-            toast("${selectVideoInfo.size}개의 파일을 업로드 합니다")
-            startService<UploadService> (
-                INTENT_UPLOAD_LIST to selectVideoInfo
-            )
-        }
+    fun saveClick(view: View) {
+
     }
 
     fun addVideoClick(view: View) {
@@ -76,17 +77,18 @@ class MainActivity : AppCompatActivity() {
 
         windowManager.defaultDisplay.getSize(size)
         supportFragmentManager.let {
-            VideoLoadDialog(size.x, size.y) {
-                selectVideoInfo = it
-                selectListAdapter.videoInfo = it
-                selectListAdapter.notifyDataSetChanged()
+            VideoLoadDialog(applicationContext, size.x, size.y) {
+                Log.d("seolim", "size : " + it.size)
+                it.forEach {
+                    mainViewModel.insert(Video(it.title, it.uri))
+                }
             }.show(it, "")
         }
     }
 
     override fun onBackPressed() {
-        if(isDeleteMode) {
-            isDeleteMode = false
+        if(mainViewModel.isDeleteMode) {
+            mainViewModel.isDeleteMode = false
             selectListAdapter.setNormalMode()
         } else{
             finish()
